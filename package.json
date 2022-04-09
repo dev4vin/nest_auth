@@ -2,9 +2,12 @@
   "name": "@dev4vin/nest_auth",
   "version": "0.0.2",
   "description": "Authentication based utilities nest js",
+  "bugs": {
+    "url": "https://github.com/dev4vin/nest_auth.git/issues"
+  },
   "repository": {
     "type": "git",
-    "url": "https::github.com/dev4vin/vigilant-adventure"
+    "url": "https://github.com/dev4vin/nest_auth.git"
   },
   "license": "MIT",
   "author": "Peter Vincent",
