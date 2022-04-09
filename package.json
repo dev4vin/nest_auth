@@ -18,16 +18,24 @@
     "/dist"
   ],
   "dependencies": {
+    "@nestjs/jwt": "^8.0.0",
+    "@nestjs/config": "^1.1.0",
+    "@dev4vin/commons": "^0.0.2",
+    "@dev4vin/nest_data": "^0.0.2",
+    "@nestjs/graphql": "^8.0.2",
     "bcryptjs": "^2.4.3",
-    "lodash": "^4.17.15"
+    "class-validator": "^0.13.1", 
+    "@nestjs/swagger": "^5.1.4",   
+    "lodash": "^4.17.15",
+    "passport-local": "^1.0.0",
+    "passport-jwt": "^4.0.0",
+    "@nestjs/passport": "^8.0.1"
   },
   "peerDependencies": {
-    "@dev4vin/commons": "^0.0.1",
-    "@dev4vin/nest_data": "^0.0.1",
     "@nestjs/common": "^8.0.0",
-    "@nestjs/core": "^8.0.0",
-    "@nestjs/graphql": "8.0.2",
-    "@nestjs/passport": "^8.0.1",
-    "passport-jwt": "^4.0.0"
+    "@nestjs/core": "^8.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
