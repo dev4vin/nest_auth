@@ -1,0 +1,30 @@
+{
+  "name": "@dev4vin/nest_auth",
+  "version": "0.0.2",
+  "description": "Authentication based utilities nest js",
+  "repository": {
+    "type": "git",
+    "url": "https::github.com/dev4vin/vigilant-adventure"
+  },
+  "license": "MIT",
+  "author": "Peter Vincent",
+  "type": "commonjs",
+  "main": "./dist/src/index.js",
+  "types": "./dist/src/index.d.ts",
+  "files": [
+    "/dist"
+  ],
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "lodash": "^4.17.15"
+  },
+  "peerDependencies": {
+    "@dev4vin/commons": "^0.0.1",
+    "@dev4vin/nest_data": "^0.0.1",
+    "@nestjs/common": "^8.0.0",
+    "@nestjs/core": "^8.0.0",
+    "@nestjs/graphql": "8.0.2",
+    "@nestjs/passport": "^8.0.1",
+    "passport-jwt": "^4.0.0"
+  }
+}
