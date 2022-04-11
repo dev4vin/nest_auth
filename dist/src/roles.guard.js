@@ -34,8 +34,8 @@ const jwt_auth_guard_1 = require("./jwt-auth.guard");
  */
 const RoleGuard = (...roles) => {
     let RoleGuardMixin = class RoleGuardMixin extends jwt_auth_guard_1.JwtAuthGuard {
-        constructor(reflector, authService) {
-            super(reflector);
+        constructor(authService) {
+            super();
             this.authService = authService;
         }
         canActivate(context) {
@@ -56,9 +56,8 @@ const RoleGuard = (...roles) => {
     };
     RoleGuardMixin = __decorate([
         (0, common_1.Injectable)(),
-        __param(1, (0, common_1.Inject)(authenticator_1.AUTHENTICATOR)),
-        __metadata("design:paramtypes", [core_1.Reflector,
-            authenticator_1.Authenticator])
+        __param(0, (0, common_1.Inject)(authenticator_1.AUTHENTICATOR)),
+        __metadata("design:paramtypes", [authenticator_1.Authenticator])
     ], RoleGuardMixin);
     return (0, common_1.mixin)(RoleGuardMixin);
 };

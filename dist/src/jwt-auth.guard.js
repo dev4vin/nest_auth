@@ -16,6 +16,7 @@ const execution_context_host_1 = require("@nestjs/core/helpers/execution-context
 const graphql_1 = require("@nestjs/graphql");
 const passport_1 = require("@nestjs/passport");
 const auth_guard_1 = require("./auth.guard");
+const commons_1 = require("@dev4vin/commons");
 /**
  *
  *
@@ -24,14 +25,9 @@ const auth_guard_1 = require("./auth.guard");
  * @extends {AuthGuard('jwt')}
  */
 let JwtAuthGuard = class JwtAuthGuard extends (0, passport_1.AuthGuard)('jwt') {
-    /**
-     * Creates an instance of JwtAuthGuard.
-     * @param {Reflector} reflector
-     * @memberof JwtAuthGuard
-     */
-    constructor(reflector) {
+    constructor() {
         super();
-        this.reflector = reflector;
+        this.reflector = new core_1.Reflector();
     }
     /**
      *
@@ -45,12 +41,26 @@ let JwtAuthGuard = class JwtAuthGuard extends (0, passport_1.AuthGuard)('jwt') {
         if (isPublic) {
             return true;
         }
-        return super.canActivate(context);
+        try {
+            const res = super.canActivate(context);
+            (0, commons_1.info)({
+                name: 'jwt canActivate response',
+                msg: res
+            });
+            return res;
+        }
+        catch (e) {
+            (0, commons_1.error)({
+                name: 'unable to verify jwt',
+                msg: e
+            });
+            return false;
+        }
     }
 };
 JwtAuthGuard = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [core_1.Reflector])
+    __metadata("design:paramtypes", [])
 ], JwtAuthGuard);
 exports.JwtAuthGuard = JwtAuthGuard;
 /**

@@ -26,6 +26,7 @@ const common_1 = require("@nestjs/common");
 const passport_1 = require("@nestjs/passport");
 const passport_jwt_1 = require("passport-jwt");
 const authenticator_1 = require("./authenticator");
+const commons_1 = require("@dev4vin/commons");
 /**
  *
  *
@@ -57,7 +58,19 @@ let JwtStrategy = class JwtStrategy extends (0, passport_1.PassportStrategy)(pas
      */
     validate(payload) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.authenticator.validateJwtPayload(payload);
+            try {
+                return yield this.authenticator.validateJwtPayload(payload);
+            }
+            catch (e) {
+                (0, commons_1.error)({
+                    name: `unable to verify jwt payload`,
+                    msg: {
+                        payload,
+                        error: e
+                    }
+                });
+                return undefined;
+            }
         });
     }
 };

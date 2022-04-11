@@ -4,6 +4,7 @@ import { ExecutionContextHost } from '@nestjs/core/helpers/execution-context-hos
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { AuthGuard } from '@nestjs/passport';
 import { IS_PUBLIC_KEY } from './auth.guard';
+import { error, info } from '@dev4vin/commons'
 
 /**
  *
@@ -19,8 +20,10 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
    * @param {Reflector} reflector
    * @memberof JwtAuthGuard
    */
-  constructor(private reflector: Reflector) {
+  reflector: Reflector;
+  constructor() {
     super();
+    this.reflector = new Reflector();
   }
 
   /**
@@ -35,7 +38,21 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     if (isPublic) {
       return true;
     }
-    return super.canActivate(context);
+    try {
+      const res = super.canActivate(context);
+      info({
+        name: 'jwt canActivate response',
+        msg: res
+      })
+      return res;
+    }
+    catch (e) {
+      error({
+        name: 'unable to verify jwt',
+        msg: e
+      });
+      return false;
+    }
   }
 }
 

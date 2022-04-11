@@ -8,6 +8,7 @@
     "alwaysStrict": false,
     "noFallthroughCasesInSwitch": true,
     "composite": true,
+    "esModuleInterop": true,
     "allowJs": true
   },
   "files": [],

@@ -25,6 +25,6 @@ export declare class JwtStrategy extends JwtStrategy_base {
      * @return {*}
      * @memberof JwtStrategy
      */
-    validate(payload: any): Promise<import("./IUser").IUser>;
+    validate(payload: any): Promise<import("./IUser").IUser | undefined>;
 }
 export {};

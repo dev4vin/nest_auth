@@ -12,11 +12,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Authenticator = exports.AUTHENTICATOR = exports.PASSWORDHASHER = void 0;
 const common_1 = require("@nestjs/common");
 const password_1 = require("./password");
+/**
+ * Injector key for the password hasher implementation
+ */
 exports.PASSWORDHASHER = 'PASSWORDHASHER';
-/** */
+/**
+ * injector key for the Authenticator implementation
+ * @see Authenticator
+*/
 exports.AUTHENTICATOR = "nest_api_utils_authenticator";
 /**
- *
+ * Base class for Authentication methods.
+ * Provides login implementation as weel as signing of tokens
  *
  * @export
  * @abstract
@@ -24,15 +31,15 @@ exports.AUTHENTICATOR = "nest_api_utils_authenticator";
  */
 class Authenticator {
     /**
-     *
+     * Returns user passed hasher or the default hasher
      *
      * @param {number} [rounds=12]
      * @return {*}  {PasswordHash}
      * @memberof Authenticator
      */
     getHasher() {
-        var _a;
-        return (_a = this.hasher) !== null && _a !== void 0 ? _a : new password_1.PasswordUtil();
+        var _a, _b;
+        return (_a = this.passwordHasher) !== null && _a !== void 0 ? _a : ((_b = this.hasher) !== null && _b !== void 0 ? _b : new password_1.PasswordUtil());
     }
     /**
      * checks if the scope of the user is in the roles requested by the function guard

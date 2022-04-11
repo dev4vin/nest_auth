@@ -22,7 +22,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
       password,
     });
     if (!user) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException('login credentials are not correct');
     }
     return user;
   }

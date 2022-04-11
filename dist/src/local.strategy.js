@@ -42,7 +42,7 @@ let LocalStrategy = class LocalStrategy extends (0, passport_1.PassportStrategy)
                 password,
             });
             if (!user) {
-                throw new common_1.UnauthorizedException();
+                throw new common_1.UnauthorizedException('login credentials are not correct');
             }
             return user;
         });

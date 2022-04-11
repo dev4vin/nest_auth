@@ -3,7 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { IAuthOptions } from './auth.module';
 import { AUTHENTICATOR, Authenticator } from './authenticator';
-
+import { error } from '@dev4vin/commons';
 /**
  *
  *
@@ -34,7 +34,19 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
    * @return {*}
    * @memberof JwtStrategy
    */
-  async validate(payload: any) {
-    return await this.authenticator.validateJwtPayload(payload);
+  async validate(payload: any) {    
+    try {
+      return await this.authenticator.validateJwtPayload(payload);
+    }
+    catch(e) {
+      error({
+        name: `unable to verify jwt payload`,
+        msg: {
+          payload,
+          error: e
+        }
+      });
+      return undefined;
+    }
   }
 }

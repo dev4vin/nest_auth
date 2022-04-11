@@ -12,9 +12,9 @@ import { GqlJwtAuthGuard, JwtAuthGuard } from './jwt-auth.guard';
 export const RoleGuard = (...roles: string[]): Type<CanActivate> => {
   @Injectable()
   class RoleGuardMixin extends JwtAuthGuard {
-    constructor(reflector: Reflector,
+    constructor(
       @Inject(AUTHENTICATOR) private readonly authService: Authenticator) {
-      super(reflector);
+      super();
     }
     override async canActivate(context: ExecutionContext): Promise<boolean> {
       await super.canActivate(context);

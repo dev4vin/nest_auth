@@ -1,8 +1,4 @@
 "use strict";
-/*
- * Copyright (C) 2021 SwiftRide
- *  All rights reserved
- */
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -23,7 +19,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthModule = void 0;
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
-const core_1 = require("@nestjs/core");
 const jwt_1 = require("@nestjs/jwt");
 const passport_1 = require("@nestjs/passport");
 const authenticator_1 = require("./authenticator");
@@ -31,7 +26,35 @@ const jwt_auth_guard_1 = require("./jwt-auth.guard");
 const jwt_strategy_1 = require("./jwt.strategy");
 const local_strategy_1 = require("./local.strategy");
 const password_1 = require("./password");
+/**
+ * The auth module bootstraps the internal Authenticator as well as the internal AuthController
+ * @see AuthController, your own AuthController must extend from this.
+ * @see Authenticator, your own AuthService must extend from this.
+ * @module AuthModule, global module exposes @see AUTHENTICATOR for usage with
+ * @see Authenticated guard.
+ * If globalGuard is passed as true, it exposes a global guard to the context of including module.
+ * The exposed guard is @see JwtAuthGuard
+ * @export
+ * @class AuthModule
+ */
 let AuthModule = AuthModule_1 = class AuthModule {
+    /**
+     *
+     *
+     * @static
+     * @template T the actual type extending from @see Authenticator
+     * @param {{
+     *             serviceRef: {
+     *                 new(...args: any[]): T
+     *             }, controllerRef: {
+     *                 new(authenticator: T, ...args: any[]): Type
+     *             }
+     *         }} { controllerRef, serviceRef }
+     * @param {IAuthOptions} options
+     * @param {{ imports?: any[], providers?: any[] }} { imports = [], providers = [] }
+     * @return {*}  {DynamicModule}
+     * @memberof AuthModule
+     */
     static register({ controllerRef, serviceRef }, options, { imports = [], providers = [] }) {
         var _a;
         const providers1 = [
@@ -51,7 +74,6 @@ let AuthModule = AuthModule_1 = class AuthModule {
                 },
                 inject: [jwt_1.JwtService, serviceRef, authenticator_1.PASSWORDHASHER],
             },
-            core_1.Reflector,
             {
                 provide: 'session_options',
                 useValue: options
@@ -66,6 +88,7 @@ let AuthModule = AuthModule_1 = class AuthModule {
         }
         return {
             module: AuthModule_1,
+            global: true,
             imports: [
                 ...imports,
                 jwt_1.JwtModule.registerAsync({
@@ -85,7 +108,7 @@ let AuthModule = AuthModule_1 = class AuthModule {
                 ...providers1,
                 ...providers
             ],
-            exports: [serviceRef, ...exports],
+            exports: [authenticator_1.AUTHENTICATOR, ...exports],
         };
     }
 };

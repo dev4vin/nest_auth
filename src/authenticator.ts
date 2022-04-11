@@ -4,12 +4,18 @@ import { IUser } from "./IUser";
 import { LoginEntity } from "./login.entity";
 import { PasswordHash, PasswordUtil } from "./password";
 import _ from 'lodash';
-
+/**
+ * Injector key for the password hasher implementation
+ */
 export const PASSWORDHASHER = 'PASSWORDHASHER';
-/** */
+/** 
+ * injector key for the Authenticator implementation
+ * @see Authenticator
+*/
 export const AUTHENTICATOR = "nest_api_utils_authenticator";
 /**
- *
+ * Base class for Authentication methods.
+ * Provides login implementation as weel as signing of tokens
  *
  * @export
  * @abstract
@@ -18,27 +24,35 @@ export const AUTHENTICATOR = "nest_api_utils_authenticator";
 export abstract class Authenticator {
   /**
    *
-   *
+   * The service used to make the tokens
    * @type {JwtService}
    * @memberof Authenticator
    */
   protected jwtService?: JwtService
   /**
-   *
+   * The implementation for hashing and checking user passwords during login
    *
    * @type {PasswordHash}
    * @memberof Authenticator
    */
-  public hasher?: PasswordHash;
+  public passwordHasher?: PasswordHash;
   /**
    *
+   *
+   * @protected
+   * @type {PasswordHash}
+   * @memberof Authenticator
+   */
+  protected hasher?: PasswordHash;
+  /**
+   * Returns user passed hasher or the default hasher
    *
    * @param {number} [rounds=12]
    * @return {*}  {PasswordHash}
    * @memberof Authenticator
    */
   public getHasher(): PasswordHash {
-    return this.hasher ?? new PasswordUtil();
+    return this.passwordHasher ?? (this.hasher ?? new PasswordUtil());
   }
 
   /**
@@ -49,7 +63,7 @@ export abstract class Authenticator {
    * @return {*}  {Promise<{ scope: string }>}
    * @memberof Authenticator
    */
-  public abstract validateJwtPayload({ token }: {token: any }): Promise<IUser>
+  public abstract validateJwtPayload({ token }: { token: any }): Promise<IUser>
   /**
    * checks if the scope of the user is in the roles requested by the function guard
    *
@@ -103,7 +117,7 @@ export abstract class Authenticator {
     if (this.jwtService === undefined) {
       throw new Error('app error');
     }
-    const signed = (this.jwtService).sign({ token: payload.token});
+    const signed = (this.jwtService).sign({ token: payload.token });
     return {
       token: signed,
       refreshToken: payload.refreshToken,
@@ -130,5 +144,23 @@ export abstract class Authenticator {
     }
     throw new NotFoundException('user not found with that usernamr');
   }
+  /**
+   *
+   *
+   * @abstract
+   * @param {IUser} user
+   * @return {*}  {Promise<IUser>}
+   * @memberof Authenticator
+   */
+  abstract getFullProfile(user: IUser): Promise<IUser>;
+  /**
+   *
+   *
+   * @abstract
+   * @param {Request} req
+   * @return {*}  {Promise<any>}
+   * @memberof Authenticator
+   */
+  abstract logout(req: Request): Promise<any>;
 }
 

@@ -2,11 +2,18 @@ import { JwtService } from "@nestjs/jwt";
 import { IUser } from "./IUser";
 import { LoginEntity } from "./login.entity";
 import { PasswordHash } from "./password";
+/**
+ * Injector key for the password hasher implementation
+ */
 export declare const PASSWORDHASHER = "PASSWORDHASHER";
-/** */
+/**
+ * injector key for the Authenticator implementation
+ * @see Authenticator
+*/
 export declare const AUTHENTICATOR = "nest_api_utils_authenticator";
 /**
- *
+ * Base class for Authentication methods.
+ * Provides login implementation as weel as signing of tokens
  *
  * @export
  * @abstract
@@ -15,20 +22,28 @@ export declare const AUTHENTICATOR = "nest_api_utils_authenticator";
 export declare abstract class Authenticator {
     /**
      *
-     *
+     * The service used to make the tokens
      * @type {JwtService}
      * @memberof Authenticator
      */
     protected jwtService?: JwtService;
     /**
-     *
+     * The implementation for hashing and checking user passwords during login
      *
      * @type {PasswordHash}
      * @memberof Authenticator
      */
-    hasher?: PasswordHash;
+    passwordHasher?: PasswordHash;
     /**
      *
+     *
+     * @protected
+     * @type {PasswordHash}
+     * @memberof Authenticator
+     */
+    protected hasher?: PasswordHash;
+    /**
+     * Returns user passed hasher or the default hasher
      *
      * @param {number} [rounds=12]
      * @return {*}  {PasswordHash}
@@ -106,4 +121,22 @@ export declare abstract class Authenticator {
         username: string;
         password: string;
     }): Promise<IUser>;
+    /**
+     *
+     *
+     * @abstract
+     * @param {IUser} user
+     * @return {*}  {Promise<IUser>}
+     * @memberof Authenticator
+     */
+    abstract getFullProfile(user: IUser): Promise<IUser>;
+    /**
+     *
+     *
+     * @abstract
+     * @param {Request} req
+     * @return {*}  {Promise<any>}
+     * @memberof Authenticator
+     */
+    abstract logout(req: Request): Promise<any>;
 }

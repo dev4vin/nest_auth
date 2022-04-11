@@ -9,13 +9,13 @@ declare const JwtAuthGuard_base: import("@nestjs/passport").Type<import("@nestjs
  * @extends {AuthGuard('jwt')}
  */
 export declare class JwtAuthGuard extends JwtAuthGuard_base {
-    private reflector;
     /**
      * Creates an instance of JwtAuthGuard.
      * @param {Reflector} reflector
      * @memberof JwtAuthGuard
      */
-    constructor(reflector: Reflector);
+    reflector: Reflector;
+    constructor();
     /**
      *
      *
